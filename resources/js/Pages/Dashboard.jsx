@@ -31,8 +31,6 @@ export default function Dashboard(props) {
         return;
     }, []);
 
-    console.log('porp', props)
-
     return (
         <Authenticated
             auth={props.auth}
@@ -156,9 +154,11 @@ export default function Dashboard(props) {
                                                             Edit
                                                         </Link>
                                                     </div>
-                                                    <button className="btn btn-sm btn-outline btn-error m-2">
-                                                        Delete
-                                                    </button>
+                                                    <div className="btn btn-sm btn-outline btn-error m-2">
+                                                        <Link href={route('delete.news')} as="button" method="post" data={{id: data.id}} >
+                                                            Delete
+                                                        </Link>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         );
