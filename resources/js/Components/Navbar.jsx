@@ -1,7 +1,6 @@
 import { Link } from "@inertiajs/inertia-react"
 
 const Navbar = ({user}) => {
-    console.log('user:', user)
     return (
         <div className="navbar bg-base-100">
             <div className="flex-1">

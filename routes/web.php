@@ -18,8 +18,10 @@ use Inertia\Inertia;
 
 //Homepage
 Route::get('/', [NewsController::class, 'index']);
-Route::get('/news', [NewsController::class, 'show']);
-Route::post('/news', [NewsController::class, 'store']);
+Route::get('/news', [NewsController::class, 'show'])->middleware(['auth', 'verified'])->name('create.news');;
+Route::post('/news', [NewsController::class, 'store'])->middleware(['auth', 'verified'])->name('read.news');;
+Route::get('/news/edit', [NewsController::class, 'edit'])->middleware(['auth', 'verified'])->name('edit.news');;
+Route::post('/news/update', [NewsController::class, 'update'])->middleware(['auth', 'verified'])->name('update.news');;
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [

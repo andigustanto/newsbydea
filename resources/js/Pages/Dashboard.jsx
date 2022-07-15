@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Authenticated from "@/Layouts/Authenticated";
-import { Head } from "@inertiajs/inertia-react";
+import { Link, Head } from "@inertiajs/inertia-react";
 import SideBar from "@/Components/Dashboard/Sidebar";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -31,6 +31,7 @@ export default function Dashboard(props) {
         return;
     }, []);
 
+    console.log('porp', props)
 
     return (
         <Authenticated
@@ -75,6 +76,7 @@ export default function Dashboard(props) {
                                                 />
                                             </svg>
                                             <span>
+                                                {props.flash.message}
                                             </span>
                                         </div>
                                     </div>
@@ -128,7 +130,7 @@ export default function Dashboard(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {props.news.data &&
+                                {props.news &&
                                 props.news.data.length > 0 ? (
                                     props.news.data.map((data, i) => {
                                         return (
@@ -149,9 +151,11 @@ export default function Dashboard(props) {
                                                 <td><div className="badge badge-inline">
                                                     {data.category}</div></td>
                                                 <td>
-                                                    <button className="btn btn-sm btn-outline btn-warning m-2">
-                                                        Edit
-                                                    </button>
+                                                    <div className="btn btn-sm btn-outline btn-warning m-2">
+                                                        <Link href={route('edit.news')} as="button" method="get" data={{id: data.id}} >
+                                                            Edit
+                                                        </Link>
+                                                    </div>
                                                     <button className="btn btn-sm btn-outline btn-error m-2">
                                                         Delete
                                                     </button>
@@ -160,7 +164,9 @@ export default function Dashboard(props) {
                                         );
                                     })
                                 ) : (
-                                    <p>Tidak ada berita...</p>
+                                    <tr>
+                                        <td colSpan={5} className="text-center">Tidak ada berita...</td>
+                                    </tr>
                                 )}
                             </tbody>
                         </table>
