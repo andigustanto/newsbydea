@@ -10,7 +10,6 @@ export default function Dashboard(props) {
     const [category, setCategory] = useState("");
     const [isNotif, setIsNotif] = useState(false);
     
-    console.log('props', props)
     const handleSubmit = () => {
         const data = {
             title,
@@ -149,7 +148,7 @@ export default function Dashboard(props) {
                                                     ) + "..."}
                                                 </td>
                                                 <td><div className="badge badge-inline">
-                                                    {data.category}</div></td>
+                                                    {data.users.name}</div></td>
                                                 <td>
                                                     <div className="btn btn-sm btn-outline btn-warning m-2">
                                                         <Link href={route('edit.news')} as="button" method="get" data={{id: data.id}} >

@@ -16,7 +16,11 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = new NewsCollection(News::orderBy('created_at','desc')->paginate(9));
+        $news = new NewsCollection(News::orderBy('created_at','desc')->with('users')
+        // ->get()
+        ->paginate(9)
+    );
+        // dd($news);
         return Inertia::render('Homepage', [
             'title' => 'AM News - Home',
             'description' => 'Selamat datang!',
@@ -46,7 +50,7 @@ class NewsController extends Controller
         $news->title = $request->title;
         $news->description = $request->description;
         $news->category = $request->category;
-        $news->author = auth()->user()->email;
+        $news->user_id = auth()->user()->id;
         $news->save();
 
         return redirect()->back()->with('message', 'Berita berhasil ditambahkan');
@@ -60,7 +64,9 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        $news = new NewsCollection(News::orderBy('created_at','desc')->paginate(9));
+        $news = new NewsCollection(News::orderBy('created_at','desc')
+        ->with('users')
+        ->paginate(9));
         return Inertia::render('Dashboard', [
             'title' => 'Dashboard - News',
             'news' => $news
