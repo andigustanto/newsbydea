@@ -47,24 +47,11 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'title' => 'required|unique:news|max:255',
-        //     'description' => 'required',
-        //     'category' => 'required'
-        // ])->validate();
-
         $validated = $request->validate([
             'title' => 'required|unique:news|max:255',
             'description' => 'required',
             'category' => 'required'
         ]);
-
-        // if ($validator->fails()) {
-        //     return redirect('post/create')
-        //     ->back()
-        //                 ->withErrors($validator)
-        //                 ->withInput();
-        // }
 
         $news = new News();
         $news->title = $request->title;

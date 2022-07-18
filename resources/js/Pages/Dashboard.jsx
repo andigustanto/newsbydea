@@ -10,7 +10,7 @@ export default function Dashboard(props) {
     const [category, setCategory] = useState("");
     const [isNotif, setIsNotif] = useState(false);
     const [isError, setIsError] = useState(false);
-
+    
     const handleSubmit = () => {
         const data = {
             title,
@@ -78,11 +78,6 @@ export default function Dashboard(props) {
                                             <span>{props.flash.message}</span>
                                         </div>
                                     </div>
-                                )}
-
-                                {console.log(
-                                    "props err",
-                                    props
                                 )}
 
                                 {props &&
