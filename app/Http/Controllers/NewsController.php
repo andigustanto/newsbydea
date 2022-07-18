@@ -6,6 +6,7 @@ use App\Http\Resources\NewsCollection;
 use Inertia\Inertia;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
 {
@@ -16,11 +17,11 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = new NewsCollection(News::orderBy('created_at','desc')->with('users')
-        // ->get()
-        ->paginate(9)
-    );
-        // dd($news);
+        $news = new NewsCollection(
+            News::orderBy('created_at', 'desc')->with('users')
+                ->paginate(9)
+        );
+
         return Inertia::render('Homepage', [
             'title' => 'AM News - Home',
             'description' => 'Selamat datang!',
@@ -46,6 +47,25 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+        // $validator = Validator::make($request->all(), [
+        //     'title' => 'required|unique:news|max:255',
+        //     'description' => 'required',
+        //     'category' => 'required'
+        // ])->validate();
+
+        $validated = $request->validate([
+            'title' => 'required|unique:news|max:255',
+            'description' => 'required',
+            'category' => 'required'
+        ]);
+
+        // if ($validator->fails()) {
+        //     return redirect('post/create')
+        //     ->back()
+        //                 ->withErrors($validator)
+        //                 ->withInput();
+        // }
+
         $news = new News();
         $news->title = $request->title;
         $news->description = $request->description;
@@ -64,9 +84,9 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        $news = new NewsCollection(News::orderBy('created_at','desc')
-        ->with('users')
-        ->paginate(9));
+        $news = new NewsCollection(News::orderBy('created_at', 'desc')
+            ->with('users')
+            ->paginate(9));
         return Inertia::render('Dashboard', [
             'title' => 'Dashboard - News',
             'news' => $news

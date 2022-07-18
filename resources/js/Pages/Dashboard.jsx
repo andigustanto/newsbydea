@@ -9,14 +9,14 @@ export default function Dashboard(props) {
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const [isNotif, setIsNotif] = useState(false);
-    
+    const [isError, setIsError] = useState(false);
+
     const handleSubmit = () => {
         const data = {
             title,
             description,
             category,
         };
-
 
         Inertia.post("/admin-page/news", data);
         setTitle("");
@@ -58,7 +58,8 @@ export default function Dashboard(props) {
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 bg-white border-b border-gray-200">
-                                {isNotif && (
+                                {props &&
+                                    props.flash.message && (
                                     <div className="alert alert-success shadow-lg">
                                         <div>
                                             <svg
@@ -74,12 +75,45 @@ export default function Dashboard(props) {
                                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                                                 />
                                             </svg>
-                                            <span>
-                                                {props.flash.message}
-                                            </span>
+                                            <span>{props.flash.message}</span>
                                         </div>
                                     </div>
                                 )}
+
+                                {console.log(
+                                    "props err",
+                                    props
+                                )}
+
+                                {props &&
+                                    props.errors &&
+                                    Object.entries(props.errors).map(
+                                        (err, i) => {
+                                            return (
+                                                <div key={i} className="alert alert-error shadow-lg mt-4 mb-4">
+                                                    <div>
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            className="stroke-current flex-shrink-0 h-6 w-6"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth="2"
+                                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                        <span>
+                                                            {err[1]}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
+                                    )}
+
                                 <input
                                     type="text"
                                     placeholder="Judul"
@@ -129,8 +163,7 @@ export default function Dashboard(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {props.news &&
-                                props.news.data.length > 0 ? (
+                                {props.news && props.news.data.length > 0 ? (
                                     props.news.data.map((data, i) => {
                                         return (
                                             <tr className="hover" key={i}>
@@ -147,16 +180,37 @@ export default function Dashboard(props) {
                                                         20
                                                     ) + "..."}
                                                 </td>
-                                                <td><div className="badge badge-inline">
-                                                    {data.users.name}</div></td>
+                                                <td>
+                                                    <div className="badge badge-inline">
+                                                        {data.users.name}
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div className="btn btn-sm btn-outline btn-warning m-2">
-                                                        <Link href={route('edit.news')} as="button" method="get" data={{id: data.id}} >
+                                                        <Link
+                                                            href={route(
+                                                                "edit.news"
+                                                            )}
+                                                            as="button"
+                                                            method="get"
+                                                            data={{
+                                                                id: data.id,
+                                                            }}
+                                                        >
                                                             Edit
                                                         </Link>
                                                     </div>
                                                     <div className="btn btn-sm btn-outline btn-error m-2">
-                                                        <Link href={route('delete.news')} as="button" method="post" data={{id: data.id}} >
+                                                        <Link
+                                                            href={route(
+                                                                "delete.news"
+                                                            )}
+                                                            as="button"
+                                                            method="post"
+                                                            data={{
+                                                                id: data.id,
+                                                            }}
+                                                        >
                                                             Delete
                                                         </Link>
                                                     </div>
@@ -166,7 +220,9 @@ export default function Dashboard(props) {
                                     })
                                 ) : (
                                     <tr>
-                                        <td colSpan={5} className="text-center">Tidak ada berita...</td>
+                                        <td colSpan={5} className="text-center">
+                                            Tidak ada berita...
+                                        </td>
                                     </tr>
                                 )}
                             </tbody>
