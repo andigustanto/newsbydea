@@ -18,11 +18,32 @@ use Inertia\Inertia;
 
 //Homepage
 Route::get('/', [NewsController::class, 'index']);
-Route::get('/news', [NewsController::class, 'show'])->middleware(['auth', 'verified'])->name('create.news');;
-Route::post('/news', [NewsController::class, 'store'])->middleware(['auth', 'verified'])->name('read.news');;
-Route::get('/news/edit', [NewsController::class, 'edit'])->middleware(['auth', 'verified'])->name('edit.news');;
-Route::post('/news/update', [NewsController::class, 'update'])->middleware(['auth', 'verified'])->name('update.news');;
-Route::post('/news/delete', [NewsController::class, 'destroy'])->middleware(['auth', 'verified'])->name('delete.news');;
+// Route::get('/news', [NewsController::class, 'show'])->middleware(['auth', 'verified'])->name('create.news');
+// Route::post('/news', [NewsController::class, 'store'])->middleware(['auth', 'verified'])->name('read.news');
+// Route::get('/news/edit', [NewsController::class, 'edit'])->middleware(['auth', 'verified'])->name('edit.news');
+// Route::post('/news/update', [NewsController::class, 'update'])->middleware(['auth', 'verified'])->name('update.news');
+// Route::post('/news/delete', [NewsController::class, 'destroy'])->middleware(['auth', 'verified'])->name('delete.news');
+
+// Dashboard
+Route::middleware(['auth', 'verified'])->group(function(){
+
+    // News controller
+    Route::controller(NewsController::class)->group(function(){
+
+        // News prefix
+        Route::prefix('admin-page')->group(function(){
+            Route::get('/', 'show')->name('dashboard.news');
+            Route::prefix('news')->group(function(){
+                Route::get('/', 'show')->name('read.news');
+                Route::post('/', 'store')->name('create.news');
+                Route::get('/edit', 'edit')->name('edit.news');
+                Route::post('/update', 'update')->name('update.news');
+                Route::post('/delete', 'destroy')->name('delete.news');
+            });
+        });
+
+    });
+});
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [

@@ -9,7 +9,8 @@ export default function Dashboard(props) {
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const [isNotif, setIsNotif] = useState(false);
-
+    
+    console.log('props', props)
     const handleSubmit = () => {
         const data = {
             title,
@@ -17,7 +18,8 @@ export default function Dashboard(props) {
             category,
         };
 
-        Inertia.post("/news", data);
+
+        Inertia.post("/admin-page/news", data);
         setTitle("");
         setDescription("");
         setCategory("");
@@ -26,7 +28,7 @@ export default function Dashboard(props) {
 
     useEffect(() => {
         if (!props.news) {
-            Inertia.get("/news");
+            Inertia.get("/admin-page/news");
         }
         return;
     }, []);

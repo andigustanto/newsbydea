@@ -1,3 +1,5 @@
+import { Link } from "@inertiajs/inertia-react";
+
 const SideBar = () => {
     return (
         <aside className="w-64 p-2" aria-label="Sidebar">
@@ -73,8 +75,7 @@ const SideBar = () => {
                         </a>
                     </li>
                     <li>
-                        <a
-                            href="#"
+                        <Link href={route('logout')} method="post" as="button"
                             className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                             <svg
@@ -93,7 +94,7 @@ const SideBar = () => {
                             <span className="flex-1 ml-3 whitespace-nowrap">
                                 Sign Out
                             </span>
-                        </a>
+                        </Link>
                     </li>
                     
                 </ul>

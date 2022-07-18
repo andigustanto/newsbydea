@@ -21,7 +21,7 @@ export default function EditNews(props) {
             category : category.length > 0 ? category : props.news.category,
         };
 
-        Inertia.post("/news/update", data);
+        Inertia.post("/admin-page/news/update", data);
         setTitle("");
         setDescription("");
         setCategory("");
