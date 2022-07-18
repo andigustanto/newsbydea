@@ -6,9 +6,8 @@ use App\Models\News;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class NewsSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,14 +16,10 @@ class NewsSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::factory()
-        ->hasNews(5)
-        ->count(10)
-        ->create();
-
-        News::factory()
-        // ->count(50)
-        ->for($user)
-        ->create();
+        // User::factory()
+        // ->hasNews(3)
+        // ->has(News::factory()->count(3))
+        // ->count(5)
+        // ->create();
     }
 }
