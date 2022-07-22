@@ -11,6 +11,7 @@ export default function EditNews(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
+    const [image, setImage] = useState(null);
 
     const handleSubmit = () => {
         title.length > 0 ? title : props.news.title;
@@ -21,12 +22,14 @@ export default function EditNews(props) {
             description:
                 description.length > 0 ? description : props.news.description,
             category: category.length > 0 ? category : props.news.category,
+            image
         };
 
         Inertia.post("/admin-page/news/update", data);
         setTitle("");
         setDescription("");
         setCategory("");
+        setImage(null)
     };
 
     return (
@@ -70,7 +73,29 @@ export default function EditNews(props) {
                                 }
                                 defaultValue={props.news.category}
                             />
-                            <Link href={route('read.news')}
+
+                            {props.news.image && (
+                                <img
+                                    src={
+                                        props.ziggy.url +
+                                        "/storage/" +
+                                        props.news.image
+                                    }
+                                    alt=""
+                                    width="200px"
+                                />
+                            )}
+
+                            <p className="my-2">Change Image</p>
+                            <input
+                                type="file"
+                                className="m2 input input-bordered w-full"
+                                name="image"
+                                onChange={(e) => setImage(e.target.files[0])}
+                            />
+
+                            <Link
+                                href={route("read.news")}
                                 className="btn btn-warning m-2"
                                 as="button"
                             >

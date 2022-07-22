@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Resources\NewsCollection;
 use Inertia\Inertia;
 use App\Models\News;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -55,7 +57,7 @@ class NewsController extends Controller
         ]);
 
         if ($request->hasFile('image')){
-            $path = $request->file('image')->storeAs('uploads', $request->title.'-'.time().'.'.$request->image->extension());
+            $path = $request->file('image')->storeAs('uploads', str_replace(" ","-",$request->title).'-'.time().'.'.$request->image->extension());
             // $fileName = $request->title.'-'.time().'.'.$request->image->extension();
         }else{
             $path = '';
@@ -113,10 +115,23 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        News::where('id', $request->id)->update([
+        $id = $request->id;
+   
+        $news = News::find($id);
+        $oldImage = $news->image;
+
+        if ($request->hasFile('image')){
+            Storage::delete($oldImage);
+            $newImage = $request->file('image')->storeAs('uploads', str_replace(" ","-",$request->title).'-'.time().'.'.$request->image->extension());
+        }else{
+            $newImage = $oldImage;
+        }
+        
+        News::where('id', $id)->update([
             'title' => $request->title,
             'description' => $request->description,
-            'category' => $request->category
+            'category' => $request->category,
+            'image' => $newImage
         ]);
 
         return to_route('dashboard')->with('message', 'Update berita berhasil!');
@@ -131,6 +146,8 @@ class NewsController extends Controller
     public function destroy(News $news, Request $request)
     {
         $data = News::find($request->id);
+        $oldImage = $data->image;
+        Storage::delete($oldImage);
         $data->delete();
         return redirect()->back()->with('message', 'Berita berhasil dihapus');
     }

@@ -11,8 +11,6 @@ export const NewsCreate = ({ props }) => {
     const [image, setImage] = useState(null);
     const [isCreate, setIsCreate] = useState(false);
     
-    console.log('image', image)
-
     const handleSubmit = () => {
         const data = {
             title,
@@ -20,7 +18,6 @@ export const NewsCreate = ({ props }) => {
             category,
             image
         };
-        console.log('data send', data)
 
         Inertia.post("/admin-page/news", data);
 

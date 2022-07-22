@@ -4,6 +4,7 @@ import { Link, Head } from "@inertiajs/inertia-react";
 import { NewsCreate } from "@/Components/Dashboard/News/NewsCreate";
 
 const News = ({ props }) => {
+    console.log("props", props);
     useEffect(() => {
         if (!props.news) {
             Inertia.get("/admin-page/news");
@@ -21,6 +22,7 @@ const News = ({ props }) => {
                         <tr>
                             <th></th>
                             <th>Title</th>
+                            <th>Image</th>
                             <th>Desc</th>
                             <th>Author</th>
                             <th>Action</th>
@@ -35,6 +37,19 @@ const News = ({ props }) => {
                                         <td>
                                             {data.title.substring(0, 30) +
                                                 "..."}
+                                        </td>
+                                        <td>
+                                            {!data.img && (
+                                                <img
+                                                    src={
+                                                        props.ziggy.url +
+                                                        "/storage/" +
+                                                        data.image
+                                                    }
+                                                    alt=""
+                                                    width="50px"
+                                                />
+                                            )}
                                         </td>
                                         <td>
                                             {data.description.substring(0, 20) +
