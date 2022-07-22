@@ -17,7 +17,7 @@ export default function Dashboard(props) {
             }
         >
             <Head title={props.title} />
-            <div className="flex">
+            <div className="flex justify-between">
                 <SideBar />
 
                 <News props={props} />

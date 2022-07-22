@@ -1,36 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { AlertSuccess } from '@/Components/Dashboard/AlertSuccess';
-import { AlertError } from '@/Components/Dashboard/AlertError';
+import { useForm } from "@inertiajs/inertia-react";
+import { AlertSuccess } from "@/Components/Dashboard/AlertSuccess";
+import { AlertError } from "@/Components/Dashboard/AlertError";
 
-export const NewsCreate = ({props}) => {
+export const NewsCreate = ({ props }) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
+    const [image, setImage] = useState(null);
     const [isCreate, setIsCreate] = useState(false);
+    
+    console.log('image', image)
 
     const handleSubmit = () => {
         const data = {
             title,
             description,
             category,
+            image
         };
+        console.log('data send', data)
 
         Inertia.post("/admin-page/news", data);
-        
-        if( title !== "" && description !== "" && category !== ""){
+
+        if (title !== "" && description !== "" && category !== "") {
             setTitle("");
             setDescription("");
             setCategory("");
+            setImage(null)
         }
     };
-
-    console.log('create', isCreate)
 
     return (
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div className={"p-2 bg-white border-b border-gray-200 " + (isCreate && 'hidden')} >
+                <div
+                    className={
+                        "p-2 bg-white border-b border-gray-200 " +
+                        (isCreate && "hidden")
+                    }
+                >
                     <button
                         className="btn btn-sm btn-primary m-2"
                         onClick={() => setIsCreate(!isCreate)}
@@ -39,7 +49,12 @@ export const NewsCreate = ({props}) => {
                     </button>
                 </div>
 
-                <div className={"p-2 bg-white border-b border-gray-200 " + (!isCreate && 'hidden')} >
+                <div
+                    className={
+                        "p-2 bg-white border-b border-gray-200 " +
+                        (!isCreate && "hidden")
+                    }
+                >
                     {props && props.flash.message && (
                         <AlertSuccess message={props.flash.message} />
                     )}
@@ -73,6 +88,14 @@ export const NewsCreate = ({props}) => {
                         }
                         value={category}
                     />
+
+                    <input
+                        type="file"
+                        className="m2 input input-bordered w-full"
+                        name="image"
+                        onChange={(e) => setImage(e.target.files[0])}
+                    />
+
                     <button
                         className="btn btn-warning m-2"
                         onClick={() => setIsCreate(!isCreate)}

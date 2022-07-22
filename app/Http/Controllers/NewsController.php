@@ -50,14 +50,24 @@ class NewsController extends Controller
         $validated = $request->validate([
             'title' => 'required|unique:news|max:255',
             'description' => 'required',
-            'category' => 'required'
+            'category' => 'required',
+            'image' => 'required|mimes:jpg,jpeg,png|image|max:2048'
         ]);
+
+        if ($request->hasFile('image')){
+            $path = $request->file('image')->storeAs('uploads', $request->title.'-'.time().'.'.$request->image->extension());
+            // $fileName = $request->title.'-'.time().'.'.$request->image->extension();
+        }else{
+            $path = '';
+        }
+        
 
         $news = new News();
         $news->title = $request->title;
         $news->description = $request->description;
         $news->category = $request->category;
         $news->user_id = auth()->user()->id;
+        $news->image = $path;
         $news->save();
 
         return redirect()->back()->with('message', 'Berita berhasil ditambahkan');
